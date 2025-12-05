@@ -11,7 +11,7 @@
 
 // pub fn part1(input: &str) -> i64 {
 //     let mut sum: i64 = 0;
-//     for line in input.lines() {        
+//     for line in input.lines() {
 //         println!("line: {}", line);
 //         let biggest_pair = line.chars().fold((0, 0), |big_pair, c| {
 //             get_two_max_digits(big_pair, c.to_digit(10).unwrap() as u8)
@@ -31,7 +31,7 @@ fn line_iterate(line: &str) -> i64 {
 
     for (i, c) in line.chars().enumerate() {
         let dig: i64 = c.to_digit(10).unwrap().into();
-        
+
         if i == line.len() - 1 {
             if dig > h {
                 h = dig;
@@ -39,7 +39,7 @@ fn line_iterate(line: &str) -> i64 {
             }
             break;
         }
-        
+
         if dig > H {
             H = dig;
             Hpos = i;
@@ -70,9 +70,7 @@ fn line_iterate(line: &str) -> i64 {
 }
 
 pub fn part1(input: &str) -> i64 {
-    input.lines().fold(0, |sum, line| {
-        sum + line_iterate(line)
-    })
+    input.lines().fold(0, |sum, line| sum + line_iterate(line))
 }
 
 pub fn line_iterate_part2(line: &str, decimals_needed: usize) -> i64 {
@@ -97,7 +95,8 @@ pub fn line_iterate_part2(line: &str, decimals_needed: usize) -> i64 {
     }
 
     // note if a tie, take left gives more room for next digits
-    return largest_digit * 10_i64.pow(decimals_needed as u32) + line_iterate_part2(&line[largest_digit_pos + 1..], decimals_needed - 1);
+    return largest_digit * 10_i64.pow(decimals_needed as u32)
+        + line_iterate_part2(&line[largest_digit_pos + 1..], decimals_needed - 1);
 }
 
 fn line_print_part2(line: &str, decimals_needed: usize) {
@@ -109,11 +108,9 @@ fn line_print_part2(line: &str, decimals_needed: usize) {
     let mut largest_digit_pos = 0;
 
     for (i, c) in line.chars().enumerate() {
-        if i + decimals_needed > line.len() {
-            
+        if i + decimals_needed > line.len() {}
+    }
 }
-
-
 
 pub fn part2(input: &str) -> i64 {
     input.lines().fold(0, |sum, line| {
@@ -121,4 +118,3 @@ pub fn part2(input: &str) -> i64 {
         sum + line_iterate_part2(line, 12)
     })
 }
-

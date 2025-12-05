@@ -1,17 +1,18 @@
 mod day1;
 mod day2;
 mod day3;
+mod day4;
 use std::env;
 use std::fs;
 
 fn main() {
     let day = env::args().nth(1).expect("Usage: cargo run <day>");
-    
+
     // Parse: "2at" -> day_num="2", part="a", test=true
     let is_test = day.ends_with('t');
     let day_trimmed = if is_test { &day[..day.len() - 1] } else { &day };
     let day_num = &day_trimmed[..day_trimmed.len() - 1];
-    
+
     let input_file = if is_test {
         format!("inputs/{}t.txt", day_num)
     } else {
@@ -26,6 +27,8 @@ fn main() {
         "2b" => println!("{}", day2::part2(&input)),
         "3a" => println!("{}", day3::part1(&input)),
         "3b" => println!("{}", day3::part2(&input)),
+        "4a" => println!("{}", day4::part1(&input)),
+        "4b" => println!("{}", day4::part2(&input)),
         _ => eprintln!("Unknown day: {}", day),
     }
 }

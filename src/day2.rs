@@ -3,7 +3,7 @@ pub fn part1(input: &str) -> i64 {
     for parts in input.lines().next().unwrap().split(",") {
         let (start_str, end_str) = parts.split_once("-").unwrap();
         let spans = get_spans(start_str, end_str);
-        
+
         for (start_str, end_str, start_num, end_num) in spans {
             count += get_count_in_range_equal_digits(&start_str, &end_str);
         }
@@ -16,7 +16,6 @@ fn get_spans(start_str: &str, end_str: &str) -> Vec<(String, String, i64, i64)> 
     let start_num = start_str.parse::<i64>().unwrap();
     let end_num = end_str.parse::<i64>().unwrap();
 
-
     let mut curr_digits = start_str.len();
     let mut curr_num = start_num;
     while curr_digits <= end_str.len() {
@@ -26,7 +25,12 @@ fn get_spans(start_str: &str, end_str: &str) -> Vec<(String, String, i64, i64)> 
             curr_digits += 1;
         } else {
             let curr_end_num = end_num.min(10_i64.pow(curr_digits as u32) - 1);
-            span.push((curr_num.to_string(), curr_end_num.to_string(), curr_num, curr_end_num));
+            span.push((
+                curr_num.to_string(),
+                curr_end_num.to_string(),
+                curr_num,
+                curr_end_num,
+            ));
             curr_digits += 2;
             curr_num = 10_i64.pow(curr_digits as u32);
         }
@@ -42,11 +46,11 @@ fn get_count_in_range_equal_digits(start_str: &str, end_str: &str) -> i64 {
 
     let start = start_str.parse::<i64>().unwrap();
     let end = end_str.parse::<i64>().unwrap();
-    
+
     let start_half = get_first_num_in_range(start_str, start);
     let end_half = get_last_num_in_range(end_str, end);
 
-    if start_half > end_half { 
+    if start_half > end_half {
         return 0;
     } else if start_half == end_half {
         return start_half * 10_i64.pow(start_str.len() as u32 / 2) + start_half;
@@ -58,7 +62,7 @@ fn get_count_in_range_equal_digits(start_str: &str, end_str: &str) -> i64 {
 
 // technically we only need the half when we do this
 fn get_first_num_in_range(start_str: &str, start: i64) -> i64 {
-    /* 
+    /*
      * Basically map a number here say d1d2d3d4d5d6d7d8 to a number e1e2e3e40000 such that
      * e1e2e3e4e1e2e3e4 >= d1d2d3d4d5d6d7d8 and e4 <= d4+1 ie this is the next number in the sequence
      */
@@ -81,7 +85,7 @@ fn get_last_num_in_range(end_str: &str, end: i64) -> i64 {
     let ten_exponent = 10_i64.pow(half_num_digits as u32);
     let first_half = end / ten_exponent;
     let possible_last_num = first_half * ten_exponent + first_half;
-    
+
     if end >= possible_last_num {
         first_half // * ten_exponent + (first_half - 1)
     } else {
@@ -89,8 +93,7 @@ fn get_last_num_in_range(end_str: &str, end: i64) -> i64 {
     }
 }
 
-
-// say we start with a number say 
+// say we start with a number say
 
 // start 1 - 42450123
 
@@ -105,26 +108,18 @@ fn get_last_num_in_range(end_str: &str, end: i64) -> i64 {
 //     num = first_half + 1 * ten_exponent;
 // }
 
-
 // start 2 - 42457234
-
-
-
-
 
 pub fn part2(input: &str) -> i32 {
     0
 }
-
-
-
 
 // pub fn part1(input: &str) -> i64 {
 //     let mut count: i64 = 0;
 //     for parts in input.lines().next().unwrap().split(",") {
 //         let (start_str, end_str) = parts.split_once("-").unwrap();
 //         let spans = get_spans(start_str, end_str);
-        
+
 //         for (start_str, end_str, start_num, end_num) in spans {
 //             count += get_count_in_range_equal_digits(&start_str, &end_str);
 //         }
@@ -136,7 +131,6 @@ pub fn part2(input: &str) -> i32 {
 //     let mut span: Vec<(String, String, i64, i64)> = Vec::new();
 //     let start_num = start_str.parse::<i64>().unwrap();
 //     let end_num = end_str.parse::<i64>().unwrap();
-
 
 //     let mut curr_digits = start_str.len();
 //     let mut curr_num = start_num;
@@ -163,11 +157,11 @@ pub fn part2(input: &str) -> i32 {
 
 //     let start = start_str.parse::<i64>().unwrap();
 //     let end = end_str.parse::<i64>().unwrap();
-    
+
 //     let start_half = get_first_num_in_range(start_str, start);
 //     let end_half = get_last_num_in_range(end_str, end);
 
-//     if start_half > end_half { 
+//     if start_half > end_half {
 //         return 0;
 //     } else if start_half == end_half {
 //         return start_half * 10_i64.pow(start_str.len() as u32 / 2) + start_half;
@@ -179,11 +173,10 @@ pub fn part2(input: &str) -> i32 {
 
 // // technically we only need the half when we do this
 // fn get_first_num_in_range(start_str: &str, start: i64) -> i64 {
-//     /* 
+//     /*
 //      * Basically map a number here say d1d2d3d4d5d6d7d8 to a number e1e2e3e40000 such that
 //      * e1e2e3e4e1e2e3e4 >= d1d2d3d4d5d6d7d8 and e4 <= d4+1 ie this is the next number in the sequence
 //      */
-
 //     let num_digits = start_str.len();
 //     let half_num_digits = num_digits / 2;
 //     let ten_exponent = 10_i64.pow(half_num_digits as u32);
@@ -202,7 +195,7 @@ pub fn part2(input: &str) -> i32 {
 //     let ten_exponent = 10_i64.pow(half_num_digits as u32);
 //     let first_half = end / ten_exponent;
 //     let possible_last_num = first_half * ten_exponent + first_half;
-    
+
 //     if end >= possible_last_num {
 //         first_half // * ten_exponent + (first_half - 1)
 //     } else {
@@ -210,8 +203,7 @@ pub fn part2(input: &str) -> i32 {
 //     }
 // }
 
-
-// // say we start with a number say 
+// // say we start with a number say
 
 // // start 1 - 42450123
 
@@ -226,12 +218,7 @@ pub fn part2(input: &str) -> i32 {
 // //     num = first_half + 1 * ten_exponent;
 // // }
 
-
 // // start 2 - 42457234
-
-
-
-
 
 // pub fn part2(input: &str) -> i32 {
 //     0
