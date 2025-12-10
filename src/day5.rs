@@ -11,7 +11,7 @@ fn build_ranges_and_return_rest(input: &str) -> (Vec<(i64, i64)>, &str) {
         })
         .collect::<Vec<(i64, i64)>>();
 
-    all_ranges.sort();
+    all_ranges.sort_by(|a, b| a.0.cmp(&b.0).then(a.1.cmp(&b.1)));
 
     return (all_ranges, ingredients);
 }
@@ -59,51 +59,47 @@ fn merge_ranges(all_ranges: &mut Vec<(i64, i64)>) {
     // merge ranges so they dont overlap (part 2) -- could use for part 1 but i liked how i did it
     let mut pos = 0;
     while pos < all_ranges.len() - 1 {
-        if all_ranges[pos].1 >= all_ranges[pos + 1].0 {
-            all_ranges[pos].1 = all_ranges[pos + 1].1;
+        if all_ranges[pos].1 + 1 >= all_ranges[pos + 1].0 {
+            all_ranges[pos].1 = all_ranges[pos + 1].1.max(all_ranges[pos].1);
             all_ranges.remove(pos + 1);
         } else {
             pos += 1;
         }
     }
-    all_ranges.insert(0, (0, 0))
 }
 
 pub fn part2(input: &str) -> i64 {
-    let (mut all_ranges, ingredients) = build_ranges_and_return_rest(input);
+    let (mut all_ranges, _) = build_ranges_and_return_rest(input);
     merge_ranges(&mut all_ranges);
 
-    let ingredient_ranges = ingredients
-        .lines()
-        .map(|raw_ingredient| {
-            let (start_range, end_range) = raw_ingredient.split_once("-").unwrap();
-            (
-                start_range.parse::<i64>().unwrap(),
-                end_range.parse::<i64>().unwrap(),
-            )
-        })
-        .collect::<Vec<(i64, i64)>>();
+    // for (start, end) in all_ranges.iter() {
+    //     println!("start: {}, end: {}", start, end);
+    //     println!("Start num digits: {}", start.to_string().len());
+    //     println!("End num digits: {}", end.to_string().len());
+    //     println!("--------------------------------");
+    // }
 
-    let mut fresh_count = 0;
-    for (start_ingredient, end_ingredient) in ingredient_ranges {
-        let mut curr_range = all_ranges.partition_point(|range| range.0 <= start_ingredient) - 1; // guaranteed because we inserted 0-0
-        let mut curr_ingredient_start = start_ingredient;
-        let curr_ingredient_end = end_ingredient;
+    all_ranges.iter().map(|(start, end)| end - start + 1).sum()
 
-        loop {
-            if all_ranges[curr_range].1 < curr_ingredient_start {
-                curr_range += 1;
-            } else {
-                let end_of_range = all_ranges[curr_range].1.min(curr_ingredient_end);
-                fresh_count += end_of_range - curr_ingredient_start + 1;
-                curr_ingredient_start = end_of_range + 1;
-                curr_range += 1;
-                if curr_range == all_ranges.len() || curr_ingredient_start > curr_ingredient_end {
-                    break;
-                }
-            }
-        }
-    }
+    // thought we were finding fresh ids in the range so this was much harder
+    // let mut fresh_count = 0;
+    // for (start_ingredient, end_ingredient) in ingredient_ranges {
+    //     let mut curr_range = all_ranges.partition_point(|range| range.0 <= start_ingredient) - 1; // guaranteed because we inserted 0-0
+    //     let mut curr_ingredient_start = start_ingredient;
+    //     let curr_ingredient_end = end_ingredient;
 
-    fresh_count
+    //     loop {
+    //         if all_ranges[curr_range].1 < curr_ingredient_start {
+    //             curr_range += 1;
+    //         } else {
+    //             let end_of_range = all_ranges[curr_range].1.min(curr_ingredient_end);
+    //             fresh_count += end_of_range - curr_ingredient_start + 1;
+    //             curr_ingredient_start = end_of_range + 1;
+    //             curr_range += 1;
+    //             if curr_range == all_ranges.len() || curr_ingredient_start > curr_ingredient_end {
+    //                 break;
+    //             }
+    //         }
+    //     }
+    // }
 }
