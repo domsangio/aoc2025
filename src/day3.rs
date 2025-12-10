@@ -104,8 +104,8 @@ fn line_print_part2(line: &str, decimals_needed: usize) {
         return;
     }
 
-    let mut largest_digit = 0;
-    let mut largest_digit_pos = 0;
+    let largest_digit = 0;
+    let largest_digit_pos = 0;
 
     for (i, c) in line.chars().enumerate() {
         if i + decimals_needed > line.len() {}

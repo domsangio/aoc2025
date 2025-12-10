@@ -75,7 +75,7 @@ fn get_first_num_in_range(start_str: &str, start: i64) -> i64 {
     if start <= possible_first_num {
         first_half // * ten_exponent + first_half
     } else {
-        (first_half + 1) // * ten_exponent + (first_half + 1)
+        first_half + 1 // * ten_exponent + (first_half + 1)
     }
 }
 

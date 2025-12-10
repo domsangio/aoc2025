@@ -88,7 +88,7 @@ pub fn part2(input: &str) -> i64 {
     for (start_ingredient, end_ingredient) in ingredient_ranges {
         let mut curr_range = all_ranges.partition_point(|range| range.0 <= start_ingredient) - 1; // guaranteed because we inserted 0-0
         let mut curr_ingredient_start = start_ingredient;
-        let mut curr_ingredient_end = end_ingredient;
+        let curr_ingredient_end = end_ingredient;
 
         loop {
             if all_ranges[curr_range].1 < curr_ingredient_start {
