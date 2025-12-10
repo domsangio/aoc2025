@@ -3,6 +3,13 @@ mod day2;
 mod day3;
 mod day4;
 mod day5;
+mod day6;
+mod day7;
+mod day8;
+mod day9;
+mod day10;
+mod day11;
+mod day12;
 use std::env;
 use std::fs;
 
@@ -32,6 +39,20 @@ fn main() {
         "4b" => println!("{}", day4::part2(&input)),
         "5a" => println!("{}", day5::part1(&input)),
         "5b" => println!("{}", day5::part2(&input)),
+        "6a" => println!("{}", day6::part1(&input)),
+        "6b" => println!("{}", day6::part2(&input)),
+        "7a" => println!("{}", day7::part1(&input)),
+        "7b" => println!("{}", day7::part2(&input)),
+        "8a" => println!("{}", day8::part1(&input)),
+        "8b" => println!("{}", day8::part2(&input)),
+        "9a" => println!("{}", day9::part1(&input)),
+        "9b" => println!("{}", day9::part2(&input)),
+        "10a" => println!("{}", day10::part1(&input)),
+        "10b" => println!("{}", day10::part2(&input)),
+        "11a" => println!("{}", day11::part1(&input)),
+        "11b" => println!("{}", day11::part2(&input)),
+        "12a" => println!("{}", day12::part1(&input)),
+        "12b" => println!("{}", day12::part2(&input)),
         _ => eprintln!("Unknown day: {}", day),
     }
 }
