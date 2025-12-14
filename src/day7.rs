@@ -89,4 +89,8 @@ pub fn part2(input: &str) -> i64 {
         &line_splitters,
         &mut memoi,
     )
+
+    // TODO i think we can just pos + 1 - 1 with old value + new value and skip the recursion
+    // because if we split and then collide we just need to increment the num paths at that point
+    // where as part 1 is just is there a beam at that point
 }
