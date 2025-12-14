@@ -1,3 +1,5 @@
+use std::{collections::HashSet, io::repeat};
+
 fn get_spans(start_str: &str, end_str: &str) -> Vec<(String, String, i64, i64)> {
     let mut span: Vec<(String, String, i64, i64)> = Vec::new();
     let start_num = start_str.parse::<i64>().unwrap();
@@ -157,30 +159,33 @@ fn get_sum_invalid_ids_for_range(
     sum_of_nums * pow_sum
 }
 
+fn build_repeated_num(base_num: i64, base: usize, num_digits_in_base: usize) -> i64 {
+    (0..num_digits_in_base)
+        .map(|i| base_num * (10_i64.pow(base as u32)).pow(i as u32))
+        .sum()
+}
+
 // given the number is the same base
 fn get_repeated_count(start_str: &str, end_str: &str, start_num: i64, end_num: i64) -> i64 {
     // base is the amount of times we repeat the number
-    (1..(start_str.len() / 2 + 1))
-        .map(|base| {
-            // println!("Length of repeating number: {}", base);
-            if start_str.len() % base != 0 {
-                return 0;
-            }
-            let start_base_num = get_first_repeated_num(start_str, start_num, base);
-            let end_base_num = get_last_repeated_num(end_str, end_num, base);
+    let mut repeated_nums: HashSet<i64> = HashSet::new();
 
-            // println!("start repeating number: {}, end repeating number: {}", start_base_num, end_base_num);
-            if start_base_num <= end_base_num {
-                return get_sum_invalid_ids_for_range(
-                    start_base_num,
-                    end_base_num,
-                    start_str.len(),
-                    start_str.len() / base,
-                );
-            }
-            0
-        })
-        .sum()
+    (1..(start_str.len() / 2 + 1)).for_each(|base| {
+        if start_str.len() % base != 0 {
+            return;
+        }
+        let start_base_num = get_first_repeated_num(start_str, start_num, base);
+        let end_base_num = get_last_repeated_num(end_str, end_num, base);
+
+        // println!("start repeating number: {}, end repeating number: {}", start_base_num, end_base_num);
+        (start_base_num..=end_base_num)
+            .map(|base_num| build_repeated_num(base_num, base, start_str.len() / base))
+            .for_each(|repeated_num| {
+                repeated_nums.insert(repeated_num);
+            });
+    });
+
+    repeated_nums.iter().sum::<i64>()
 }
 
 pub fn part2(input: &str) -> i64 {
