@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug AoC",
+      "cargo": {
+        "args": ["build", "--bin=aoc2025", "--package=aoc2025"],
+        "filter": {
+          "name": "aoc2025",
+          "kind": "bin"
+        }
+      },
+      "args": ["2b"],
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}
+
