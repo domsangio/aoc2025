@@ -1,4 +1,4 @@
-use std::{collections::HashSet, io::repeat};
+use std::collections::HashSet;
 
 fn get_spans(start_str: &str, end_str: &str) -> Vec<(String, String, i64, i64)> {
     let mut span: Vec<(String, String, i64, i64)> = Vec::new();
@@ -134,30 +134,27 @@ fn get_last_repeated_num(end_str: &str, end_num: i64, base: usize) -> i64 {
     }
 }
 
-fn get_sum_invalid_ids_for_range(
-    start_base: i64,
-    end_base: i64,
-    num_digits: usize,
-    base: usize,
-) -> i64 {
-    if start_base > end_base {
-        return 0;
-    }
+// doesnt work because we have collisions unfortunately
+// fn get_sum_invalid_ids_for_range(
+//     start_base: i64,
+//     end_base: i64,
+//     num_digits: usize,
+//     base: usize,
+// ) -> i64 {
+//     if start_base > end_base {
+//         return 0;
+//     }
 
-    println!("Invalid start base: {}, end base: {}", start_base, end_base);
+//     // careful of order here due to truncation of integer division
+//     let sum_of_nums = (end_base + start_base) * (end_base - start_base + 1) / 2;
 
-    // careful of order here due to truncation of integer division
-    let sum_of_nums = (end_base + start_base) * (end_base - start_base + 1) / 2;
+//     let repeating_num_length = num_digits / base;
+//     let pow_sum = (0..base)
+//         .map(|i| 10_i64.pow(repeating_num_length as u32).pow(i as u32))
+//         .sum::<i64>();
 
-    let repeating_num_length = num_digits / base;
-    let pow_sum = (0..base)
-        .map(|i| 10_i64.pow(repeating_num_length as u32).pow(i as u32))
-        .sum::<i64>();
-
-    println!("Sum of nums: {}, pow sum: {}", sum_of_nums, pow_sum);
-    println!("Result: {}", sum_of_nums * pow_sum);
-    sum_of_nums * pow_sum
-}
+//     sum_of_nums * pow_sum
+// }
 
 fn build_repeated_num(base_num: i64, base: usize, num_digits_in_base: usize) -> i64 {
     (0..num_digits_in_base)
@@ -177,7 +174,6 @@ fn get_repeated_count(start_str: &str, end_str: &str, start_num: i64, end_num: i
         let start_base_num = get_first_repeated_num(start_str, start_num, base);
         let end_base_num = get_last_repeated_num(end_str, end_num, base);
 
-        // println!("start repeating number: {}, end repeating number: {}", start_base_num, end_base_num);
         (start_base_num..=end_base_num)
             .map(|base_num| build_repeated_num(base_num, base, start_str.len() / base))
             .for_each(|repeated_num| {
