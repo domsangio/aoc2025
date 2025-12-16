@@ -19,10 +19,7 @@ pub fn part1(input: &str) -> i64 {
     let (operands_line, numeric_lines) = binding.split_last().unwrap();
     let mut numeric_iters = numeric_lines
         .iter()
-        .map(|line| {
-            line.split_ascii_whitespace()
-                .map(|s| s.parse::<i64>().unwrap())
-        })
+        .map(|line| line.split_ascii_whitespace().map(|s| s.parse::<i64>().unwrap()))
         .collect::<Vec<_>>();
     let mut operands = (*operands_line)
         .split_ascii_whitespace()
@@ -34,12 +31,10 @@ pub fn part1(input: &str) -> i64 {
         // needed to collect the numeric_iters because we repeatedly iterate, previously i had
         // it as an iter and it drained after one interation which isnt what we wanted
 
-        acc += numeric_iters
-            .iter_mut()
-            .fold(init_operand(operand), |acc, num_iter| {
-                let num = num_iter.next().unwrap();
-                apply_operand(acc, num, operand)
-            });
+        acc += numeric_iters.iter_mut().fold(init_operand(operand), |acc, num_iter| {
+            let num = num_iter.next().unwrap();
+            apply_operand(acc, num, operand)
+        });
     }
 
     acc
@@ -90,11 +85,9 @@ pub fn part2(input: &str) -> i64 {
             index += 1;
         }
         index = next_operand_index;
-        let curr_sum = curr_nums
-            .into_iter()
-            .fold(init_operand(curr_operand), |acc, num| {
-                apply_operand(acc, num, curr_operand)
-            });
+        let curr_sum = curr_nums.into_iter().fold(init_operand(curr_operand), |acc, num| {
+            apply_operand(acc, num, curr_operand)
+        });
 
         acc += curr_sum;
     }

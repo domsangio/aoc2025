@@ -9,12 +9,7 @@ fn get_spans(start_str: &str, end_str: &str) -> Vec<(String, String, i64, i64)> 
     let mut curr_num = start_num;
     while curr_digits <= end_str.len() {
         let curr_end_num = end_num.min(10_i64.pow(curr_digits as u32) - 1);
-        span.push((
-            curr_num.to_string(),
-            curr_end_num.to_string(),
-            curr_num,
-            curr_end_num,
-        ));
+        span.push((curr_num.to_string(), curr_end_num.to_string(), curr_num, curr_end_num));
         curr_digits += 1;
         curr_num = 10_i64.pow(curr_digits as u32 - 1);
     }
@@ -89,11 +84,7 @@ pub fn part1(input: &str) -> i64 {
     count
 }
 
-fn get_repeated_num_from_base_and_digits(
-    base_num: i64,
-    base: usize,
-    num_digits_in_base: usize,
-) -> i64 {
+fn get_repeated_num_from_base_and_digits(base_num: i64, base: usize, num_digits_in_base: usize) -> i64 {
     (0..num_digits_in_base)
         .map(|i| base_num * (10_i64.pow(base as u32)).pow(i as u32))
         .sum()
