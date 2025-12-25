@@ -1,5 +1,7 @@
 // we read the input and saw that the longest string is 10 chars, so we can use u16
 
+use std::collections::VecDeque;
+
 #[derive(Debug)]
 struct Switch {
     flip: u16, // binary number of the flip
@@ -75,7 +77,44 @@ fn parse_input_line(line: &str) -> ParsedInput {
 }
 
 /**
- * Thinking out loud, there are only so many combinations. XOR has the communitative property, so
+ * input: (Current state s, count of steps = k, bit set of switches already flipped = f)
+ * set of visited states = V
+ *
+ * queue of future states = (0 state, 0 steps, flipped switches = 0)
+ *
+ * while queue is not empty;
+ *     (curr state, curr steps, curr flipped switches) = queue.pop
+ *     for switches not in flipped switches
+ *         if curr state XOR switch i == end goal
+ *             return steps + 1
+ *         else
+ *             queue.push(curr state xor switch, steps + 1, flipped switches + switch i)
+ */
+
+fn bfs1(parsed_input: ParsedInput) -> i64 {
+    let mut queue = VecDeque::new();
+    let empty_switches = vec![false; parsed_input.switches.len()];
+    queue.push_back((0, 0, empty_switches.clone()));
+
+    // TODO never implemented visited states
+    while let Some((curr_state, curr_steps, mut curr_flipped_switches)) = queue.pop_front() {
+        for (i, switch) in parsed_input.switches.iter().enumerate() {
+            if !curr_flipped_switches[i] {
+                curr_flipped_switches[i] = true;
+                let new_state = curr_state ^ switch.flip;
+                if new_state == parsed_input.end_goal.flip {
+                    return curr_steps + 1;
+                }
+                queue.push_back((new_state, curr_steps + 1, curr_flipped_switches.clone()));
+            }
+        }
+    }
+
+    panic!("No solution found");
+}
+
+/**
+ * Thinking out loud, there are only so many combinations. XOR has the commutative property, so
  * when we flip the same switch twice, it should cancel itself out. If thats true, then in the final
  * solution, the switch is either flipped once or not flipped ever -- so to find the solution, its a
  * tree where a switch is included or not; almost another bit mask to do this? or just DP solution
@@ -87,20 +126,68 @@ fn parse_input_line(line: &str) -> ParsedInput {
  */
 
 pub fn part1(input: &str) -> i64 {
-    println!("{}", input);
-    input
-        .lines()
-        .map(|line| parse_input_line(line))
-        .for_each(|parsed_input| {
-            print!("End State: ");
-            parsed_input.end_goal.print();
-            parsed_input.switches.iter().enumerate().for_each(|(i, switch)| {
-                print!("Switch {:2}: ", i);
-                switch.print();
-            });
-        });
+    // println!("{}", input);
+    // input
+    //     .lines()
+    //     .map(|line| parse_input_line(line))
+    //     .for_each(|parsed_input| {
+    //         print!("End State: ");
+    //         parsed_input.end_goal.print();
+    //         parsed_input.switches.iter().enumerate().for_each(|(i, switch)| {
+    //             print!("Switch {:2}: ", i);
+    //             switch.print();
+    //         });
+    //         println!("Steps: {}", bfs(parsed_input));
+    //     });
 
-    return 0;
+    input.lines().map(|line| parse_input_line(line)).map(bfs1).sum()
+}
+
+
+/**
+ * input: (Current state s of switch increments, count of steps = k)
+ *
+ * queue of future states = (0 state of switch increments, 0 steps)
+ *
+ * while queue is not empty;
+ *     (curr state, curr steps, curr flipped switches) = queue.pop
+ *     for switches not in flipped switches
+ *         increment curr state by switch
+ *         if curr state == end goal return num steps + 1
+ *         else
+ *             queue.push new state, steps + 1        
+ */
+
+ fn apply_switch_to_state(curr_state: Vec<u16>, switch: Switch) -> Vec<u16> {
+    let mut new_state = curr_state.clone();
+
+    (0..16).map(|i| {
+        if 1 << i
+    })
+
+    new_state
+ }
+
+ fn bfs2(parsed_input: ParsedInput) -> i64 {
+    let mut queue = VecDeque::new();
+    let new_state: Vec<u16> = vec![0; parsed_input.voltages.len()];
+    queue.push_back((new_state, 0));
+
+    while let Some((curr_state, curr_steps)) = queue.pop_front() {
+        for (i, switch) in parsed_input.switches.iter().enumerate() {
+
+            if !curr_flipped_switches[i] {
+                curr_flipped_switches[i] = true;
+                let new_state = curr_state ^ switch.flip;
+                if new_state == parsed_input.end_goal.flip {
+                    return curr_steps + 1;
+                }
+                queue.push_back((new_state, curr_steps + 1, curr_flipped_switches.clone()));
+            }
+        }
+    }
+
+    panic!("No solution found");
 }
 
 pub fn part2(input: &str) -> i64 {
