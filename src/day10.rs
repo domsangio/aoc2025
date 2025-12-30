@@ -8,6 +8,7 @@ struct Switch {
 }
 
 impl Switch {
+    #[allow(dead_code)]
     fn print(&self) {
         print!("[");
         (0..16).for_each(|i| {

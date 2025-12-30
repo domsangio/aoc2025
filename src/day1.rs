@@ -19,7 +19,6 @@ pub fn line_iterator(input: &str, count_iterator: fn(i32, i32) -> i32) -> i32 {
                 panic!("Invalid direction: {}", direction);
             }
         }
-        // println!("curr: {}, next: {}, step: {}", curr, next, direction);
         count += count_iterator(curr, next);
         curr = next.rem_euclid(100);
     }
@@ -48,9 +47,6 @@ pub fn part2(input: &str) -> i32 {
         } else {
             0
         };
-
-        // debug
-        println!("curr: {}, next: {}, ret: {}", curr, next, ret);
 
         ret
     };

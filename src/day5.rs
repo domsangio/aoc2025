@@ -37,9 +37,7 @@ pub fn part1(input: &str) -> i64 {
         .lines()
         .map(|raw_ingredient| {
             let ingredient = raw_ingredient.parse::<i64>().unwrap();
-            println!("ingredient: {}", ingredient);
             let partition_point = all_ranges.partition_point(|range| range.0 <= ingredient);
-            println!("partition_point: {}", partition_point);
 
             if partition_point == 0 {
                 return 0;
@@ -72,34 +70,5 @@ pub fn part2(input: &str) -> i64 {
     let (mut all_ranges, _) = build_ranges_and_return_rest(input);
     merge_ranges(&mut all_ranges);
 
-    // for (start, end) in all_ranges.iter() {
-    //     println!("start: {}, end: {}", start, end);
-    //     println!("Start num digits: {}", start.to_string().len());
-    //     println!("End num digits: {}", end.to_string().len());
-    //     println!("--------------------------------");
-    // }
-
     all_ranges.iter().map(|(start, end)| end - start + 1).sum()
-
-    // thought we were finding fresh ids in the range so this was much harder
-    // let mut fresh_count = 0;
-    // for (start_ingredient, end_ingredient) in ingredient_ranges {
-    //     let mut curr_range = all_ranges.partition_point(|range| range.0 <= start_ingredient) - 1; // guaranteed because we inserted 0-0
-    //     let mut curr_ingredient_start = start_ingredient;
-    //     let curr_ingredient_end = end_ingredient;
-
-    //     loop {
-    //         if all_ranges[curr_range].1 < curr_ingredient_start {
-    //             curr_range += 1;
-    //         } else {
-    //             let end_of_range = all_ranges[curr_range].1.min(curr_ingredient_end);
-    //             fresh_count += end_of_range - curr_ingredient_start + 1;
-    //             curr_ingredient_start = end_of_range + 1;
-    //             curr_range += 1;
-    //             if curr_range == all_ranges.len() || curr_ingredient_start > curr_ingredient_end {
-    //                 break;
-    //             }
-    //         }
-    //     }
-    // }
 }

@@ -180,13 +180,10 @@ pub fn part2(input: &str) -> i64 {
         .split(",")
         .map(|start_and_end| {
             let (start_str, end_str) = start_and_end.split_once("-").unwrap();
-            // println!("Start str: {}, end str: {}", start_str, end_str);
             let spans = get_spans(start_str, end_str);
-            // println!("Spans: {:?}", spans);
             spans
                 .iter()
                 .map(|(start_str, end_str, start_num, end_num)| {
-                    println!("start_str: {}, end_str: {}", start_str, end_str);
                     get_repeated_count(start_str, end_str, *start_num, *end_num)
                 })
                 .sum::<i64>()
